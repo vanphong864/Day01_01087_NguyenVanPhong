@@ -517,22 +517,19 @@ def format_comparison_table(results: list[dict]) -> str:
 # Entry point — demo chạy thật (cần OPENAI_API_KEY)
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
-    text = """
-Việt Nam là một quốc gia nằm ở khu vực Đông Nam Á, nổi tiếng với lịch sử
-lâu đời, nền văn hóa đa dạng và phong cảnh thiên nhiên phong phú. Từ những
-cánh đồng lúa ở đồng bằng sông Cửu Long đến các dãy núi hùng vĩ ở miền Bắc,
-mỗi vùng đều có những nét đặc trưng riêng. Người Việt Nam thường được biết
-đến với sự thân thiện, chăm chỉ và tinh thần gắn kết cộng đồng. Ẩm thực Việt
-Nam cũng rất phong phú với các món nổi tiếng như phở, bánh mì, bún chả và
-nhiều món ăn hấp dẫn khác.
-"""
+    print("=== So sánh model ===")
+    result = compare_models(
+        "Giải thích khác biệt giữa temperature và top_p trong một câu."
+    )
+    for key, value in result.items():
+        print(f"{key}: {value}")
 
-word_count = len(text.split())
-actual_tokens = count_tokens(text)
-estimated_tokens = word_count / 0.75
-difference = actual_tokens - estimated_tokens
-
-print(f"Số từ: {word_count}")
-print(f"Số token theo tiktoken: {actual_tokens}")
-print(f"Số token ước lượng: {estimated_tokens:.2f}")
-print(f"Chênh lệch: {difference:.2f} token")
+    print("\n=== Trợ lý CLI (gõ 'quit' để thoát) ===")
+    stats = run_assistant(
+        persona="Bạn là trợ giảng thân thiện của khóa AI, "
+                "trả lời ngắn gọn bằng tiếng Việt.",
+    )
+    print("\n--- Thống kê phiên chat ---")
+    for key, value in stats.items():
+        if key != "history":
+            print(f"{key}: {value}")
